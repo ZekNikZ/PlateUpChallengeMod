@@ -37,7 +37,7 @@ namespace ChallengeMod.Events
                 }
                 else if (ctx.Has<CPlayer>(comp.Source))
                 {
-                    GameEvents.Raise(new PlayerDropItemEventArgs
+                    GameEvents.Raise(new PlayerPlaceItemEventArgs
                     {
                         Source = comp.Source,
                         Destination = comp.Destination,
@@ -72,7 +72,7 @@ namespace ChallengeMod.Events
 
                 if (ctx.Has<CPlayer>(comp.Source))
                 {
-                    GameEvents.Raise(new PlayerDropItemEventArgs
+                    GameEvents.Raise(new PlayerPlaceItemEventArgs
                     {
                         Source = comp.Source,
                         Destination = comp.Destination,
@@ -80,6 +80,41 @@ namespace ChallengeMod.Events
                         Context = ctx,
                         SourceType = transferTarget,
                         DestinationType = TransferTarget.Provider
+                    });
+                }
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(AcceptIntoBin), "AcceptTransfer")]
+    internal class PlayerTransferIntoBinPatch
+    {
+        static void Prefix(Entity proposal_entity, EntityContext ctx)
+        {
+            if (ctx.Require(proposal_entity, out CItemTransferProposal comp) && ctx.Require(comp.Destination, out CApplianceBin comp2))
+            {
+                var transferTarget = ctx.Has<CItemProvider>(comp.Source) ? TransferTarget.Provider : TransferTarget.Holder;
+
+                GameEvents.Raise(new ItemTransferEventArgs
+                {
+                    Source = comp.Source,
+                    Destination = comp.Destination,
+                    Item = comp.Item,
+                    Context = ctx,
+                    SourceType = transferTarget,
+                    DestinationType = TransferTarget.Bin
+                });
+
+                if (ctx.Has<CPlayer>(comp.Source))
+                {
+                    GameEvents.Raise(new PlayerPlaceItemEventArgs
+                    {
+                        Source = comp.Source,
+                        Destination = comp.Destination,
+                        Item = comp.Item,
+                        Context = ctx,
+                        SourceType = transferTarget,
+                        DestinationType = TransferTarget.Bin
                     });
                 }
             }

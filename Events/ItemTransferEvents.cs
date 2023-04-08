@@ -5,7 +5,8 @@ namespace ChallengeMod.Events
     public enum TransferTarget
     {
         Holder,
-        Provider
+        Provider,
+        Bin
     }
 
     public class ItemTransferEventArgs : GameEventArgsWithEntityContext
@@ -30,7 +31,7 @@ namespace ChallengeMod.Events
         public Entity Surface => Source;
     }
 
-    public class PlayerDropItemEventArgs : ItemTransferEventArgs, IPlayerItemTransferEvent
+    public class PlayerPlaceItemEventArgs : ItemTransferEventArgs, IPlayerItemTransferEvent
     {
         public Entity Player => Source;
         public Entity Surface => Destination;

@@ -20,15 +20,20 @@ namespace ChallengeMod.Events
     {
         public static event GameEventHandler<ItemTransferEventArgs> ItemTransfer;
         public static event GameEventHandler<PlayerGrabItemEventArgs> PlayerGrabItem;
-        public static event GameEventHandler<PlayerDropItemEventArgs> PlayerDropItem;
+        public static event GameEventHandler<PlayerPlaceItemEventArgs> PlayerPlaceItem;
+        public static event GameEventHandler<AutomationGrabItemEventArgs> AutomationGrabItem;
+        public static event GameEventHandler<AutomationPlaceItemEventArgs> AutomationPlaceItem;
 
         private static readonly Dictionary<Type, object> Events = new();
 
         internal static void Init()
         {
+            // Events
             Events.Add(typeof(ItemTransferEventArgs), ItemTransfer);
-            Events.Add(typeof(PlayerDropItemEventArgs), PlayerGrabItem);
-            Events.Add(typeof(PlayerDropItemEventArgs), PlayerDropItem);
+            Events.Add(typeof(PlayerPlaceItemEventArgs), PlayerGrabItem);
+            Events.Add(typeof(PlayerPlaceItemEventArgs), PlayerPlaceItem);
+            Events.Add(typeof(AutomationGrabItemEventArgs), AutomationGrabItem);
+            Events.Add(typeof(AutomationPlaceItemEventArgs), AutomationPlaceItem);
         }
 
         internal static void Raise<T>(T args) where T : GameEventArgs { 

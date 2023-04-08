@@ -1,4 +1,5 @@
 ﻿using ChallengeMod.Events;
+using KitchenData;
 using KitchenLib;
 using KitchenLib.Event;
 using KitchenMods;
@@ -25,8 +26,11 @@ namespace ChallengeMod
 
         internal static AssetBundle Bundle;
         internal static EntityManager EntityManager;
+        internal static Mod Instance;
 
-        public Mod() : base(MOD_GUID, MOD_NAME, MOD_AUTHOR, MOD_VERSION, MOD_GAMEVERSION, Assembly.GetExecutingAssembly()) { }
+        public Mod() : base(MOD_GUID, MOD_NAME, MOD_AUTHOR, MOD_VERSION, MOD_GAMEVERSION, Assembly.GetExecutingAssembly()) {
+            Instance = this;
+        }
 
         protected override void OnInitialise()
         {
@@ -61,6 +65,16 @@ namespace ChallengeMod
             KitchenLib.Event.Events.BuildGameDataEvent += delegate (object s, BuildGameDataEventArgs args)
             {
             };
+        }
+
+        internal static Entity ZGetOccupant(Vector3 position, OccupancyLayer layer = OccupancyLayer.Default)
+        {
+            return Instance.GetOccupant(position, layer);
+        }
+
+        internal static bool ZCanReach(Vector3 from, Vector3 to, bool do_not_swap = false)
+        {
+            return Instance.CanReach(from, to, do_not_swap);
         }
 
         #region Logging
