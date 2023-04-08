@@ -10,7 +10,7 @@ namespace ChallengeMod.Tracking
         {
             base.Initialise();
 
-            GameEvents.PlayerPlaceItem += args =>
+            GameEvents.Subscribe<PlayerPlaceItemEvent>(args =>
             {
                 if (args.DestinationType != TransferTarget.Holder) return;
 
@@ -20,9 +20,9 @@ namespace ChallengeMod.Tracking
                     SourceType = CPlacedPy.ItemSource.Player,
                     Timestamp = args.Timestamp
                 });
-            };
+            });
 
-            GameEvents.AutomationPlaceItem += args =>
+            GameEvents.Subscribe<AutomationPlaceItemEvent>(args =>
             {
                 if (args.DestinationType != TransferTarget.Holder) return;
 
@@ -32,7 +32,7 @@ namespace ChallengeMod.Tracking
                     SourceType = CPlacedPy.ItemSource.Automation,
                     Timestamp = args.Timestamp
                 });
-            };
+            });
         }
 
         protected override void OnUpdate() { }

@@ -4,42 +4,65 @@ using System.Collections.Generic;
 
 namespace ChallengeMod.Events
 {
-    public class GameEventArgs
+    public abstract class GameEvent
     {
         public long Timestamp = DateTime.Now.Ticks;
+        private EntityContext? _context = null;
+        public EntityContext Context
+        {
+            get { return _context ?? Mod.EntityManager; }
+            set { _context = value; }
+        }
+
+        public abstract override string ToString();
     }
 
-    public class GameEventArgsWithEntityContext : GameEventArgs
-    {
-        public EntityContext Context;
-    }
-
-    public delegate void GameEventHandler<T>(T args) where T : GameEventArgs;
+    public delegate void GameEventHandler<T>(T args) where T : GameEvent;
 
     public class GameEvents
     {
-        public static event GameEventHandler<ItemTransferEventArgs> ItemTransfer;
-        public static event GameEventHandler<PlayerGrabItemEventArgs> PlayerGrabItem;
-        public static event GameEventHandler<PlayerPlaceItemEventArgs> PlayerPlaceItem;
-        public static event GameEventHandler<AutomationGrabItemEventArgs> AutomationGrabItem;
-        public static event GameEventHandler<AutomationPlaceItemEventArgs> AutomationPlaceItem;
+        private static readonly Dictionary<Type, List<Delegate>> Events = new();
 
-        private static readonly Dictionary<Type, object> Events = new();
+        internal static void AddEvent<T>() where T : GameEvent
+        {
+            Events.Add(typeof(T), new());
+            Mod.LogInfo($"Registered event {typeof(T).Name}");
+
+            if (Mod.DEBUG_MODE)
+            {
+                Subscribe<T>(args =>
+                {
+                    Mod.LogInfo($"Event fired: {typeof(T).Name} - {args}");
+                });
+            }
+        }
+
+        internal static void Subscribe<T>(GameEventHandler<T> handler) where T : GameEvent
+        {
+            Events[typeof(T)].Add(handler);
+        }
 
         internal static void Init()
         {
-            // Events
-            Events.Add(typeof(ItemTransferEventArgs), ItemTransfer);
-            Events.Add(typeof(PlayerPlaceItemEventArgs), PlayerGrabItem);
-            Events.Add(typeof(PlayerPlaceItemEventArgs), PlayerPlaceItem);
-            Events.Add(typeof(AutomationGrabItemEventArgs), AutomationGrabItem);
-            Events.Add(typeof(AutomationPlaceItemEventArgs), AutomationPlaceItem);
+            AddEvent<ItemTransferEvent>();
+            AddEvent<PlayerGrabItemEvent>();
+            AddEvent<PlayerPlaceItemEvent>();
+            AddEvent<AutomationGrabItemEvent>();
+            AddEvent<AutomationPlaceItemEvent>();
         }
 
-        internal static void Raise<T>(T args) where T : GameEventArgs { 
+        internal static void Raise<T>(T args) where T : GameEvent
+        {
             if (Events.ContainsKey(typeof(T)))
             {
-                (Events[typeof(T)] as GameEventHandler<T>)?.Invoke(args);
+                foreach (var handler in Events[typeof(T)])
+                {
+                    handler.DynamicInvoke(args);
+                }
+            }
+            else
+            {
+                Mod.LogWarning($"Unknown event raised: {typeof(T).Name}");
             }
         }
     }

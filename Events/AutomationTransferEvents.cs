@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Unity.Entities;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace ChallengeMod.Events
 {
@@ -14,7 +13,7 @@ namespace ChallengeMod.Events
         static IEnumerable<MethodBase> TargetMethods()
         {
             yield return AccessTools.Method(typeof(GrabItems), "AttemptGrabHolder");
-            yield return AccessTools.Method(typeof(GrabItems), "AttemptGrabProvider");
+            yield return AccessTools.Method(typeof(GrabItems), "AttemptGrabFromProvider");
         }
 
         static void Postfix(Entity target, EntityContext ctx, Entity e, ref CConveyPushItems grab, ref bool __result)
@@ -23,7 +22,7 @@ namespace ChallengeMod.Events
 
             var item = ctx.Require(e, out CItemHolder comp) ? comp.HeldItem : default;
 
-            GameEvents.Raise(new ItemTransferEventArgs
+            GameEvents.Raise(new ItemTransferEvent
             {
                 Source = target,
                 SourceType = ctx.Has<CItemProvider>(target) ? TransferTarget.Provider : TransferTarget.Holder,
@@ -33,7 +32,7 @@ namespace ChallengeMod.Events
                 Context = ctx
             });
 
-            GameEvents.Raise(new AutomationGrabItemEventArgs
+            GameEvents.Raise(new AutomationGrabItemEvent
             {
                 Source = target,
                 SourceType = ctx.Has<CItemProvider>(target) ? TransferTarget.Provider : TransferTarget.Holder,
@@ -88,7 +87,7 @@ namespace ChallengeMod.Events
             {
                 var destinationType = ___ctx.Has<CApplianceBin>(Target) ? TransferTarget.Bin : (___ctx.Has<CItemProvider>(Target) ? TransferTarget.Provider : TransferTarget.Holder);
 
-                GameEvents.Raise(new ItemTransferEventArgs
+                GameEvents.Raise(new ItemTransferEvent
                 {
                     Source = e,
                     SourceType = TransferTarget.Holder,
@@ -98,7 +97,7 @@ namespace ChallengeMod.Events
                     Context = ___ctx
                 });
 
-                GameEvents.Raise(new AutomationPlaceItemEventArgs
+                GameEvents.Raise(new AutomationPlaceItemEvent
                 {
                     Source = e,
                     SourceType = TransferTarget.Holder,
@@ -133,7 +132,7 @@ namespace ChallengeMod.Events
             {
                 var item = Mod.EntityManager.RequireComponent(teleport.Target, out CItemHolder newHolder) ? newHolder.HeldItem : default;
 
-                GameEvents.Raise(new ItemTransferEventArgs
+                GameEvents.Raise(new ItemTransferEvent
                 {
                     Source = e,
                     SourceType = TransferTarget.Holder,
@@ -143,7 +142,7 @@ namespace ChallengeMod.Events
                     Context = Mod.EntityManager
                 });
 
-                GameEvents.Raise(new AutomationGrabItemEventArgs
+                GameEvents.Raise(new AutomationGrabItemEvent
                 {
                     Source = e,
                     SourceType = TransferTarget.Holder,
@@ -153,7 +152,7 @@ namespace ChallengeMod.Events
                     Context = Mod.EntityManager
                 });
 
-                GameEvents.Raise(new AutomationPlaceItemEventArgs
+                GameEvents.Raise(new AutomationPlaceItemEvent
                 {
                     Source = e,
                     SourceType = TransferTarget.Holder,

@@ -13,7 +13,7 @@ namespace ChallengeMod.Events
             {
                 var transferTarget = ctx.Has<CItemProvider>(comp.Source) ? TransferTarget.Provider : TransferTarget.Holder;
 
-                GameEvents.Raise(new ItemTransferEventArgs
+                GameEvents.Raise(new ItemTransferEvent
                 {
                     Source = comp.Source,
                     Destination = comp.Destination,
@@ -25,7 +25,7 @@ namespace ChallengeMod.Events
 
                 if (ctx.Has<CPlayer>(comp.Destination))
                 {
-                    GameEvents.Raise(new PlayerGrabItemEventArgs
+                    GameEvents.Raise(new PlayerGrabItemEvent
                     {
                         Source = comp.Source,
                         Destination = comp.Destination,
@@ -37,7 +37,7 @@ namespace ChallengeMod.Events
                 }
                 else if (ctx.Has<CPlayer>(comp.Source))
                 {
-                    GameEvents.Raise(new PlayerPlaceItemEventArgs
+                    GameEvents.Raise(new PlayerPlaceItemEvent
                     {
                         Source = comp.Source,
                         Destination = comp.Destination,
@@ -60,7 +60,7 @@ namespace ChallengeMod.Events
             {
                 var transferTarget = ctx.Has<CItemProvider>(comp.Source) ? TransferTarget.Provider : TransferTarget.Holder;
 
-                GameEvents.Raise(new ItemTransferEventArgs
+                GameEvents.Raise(new ItemTransferEvent
                 {
                     Source = comp.Source,
                     Destination = comp.Destination,
@@ -72,7 +72,7 @@ namespace ChallengeMod.Events
 
                 if (ctx.Has<CPlayer>(comp.Source))
                 {
-                    GameEvents.Raise(new PlayerPlaceItemEventArgs
+                    GameEvents.Raise(new PlayerPlaceItemEvent
                     {
                         Source = comp.Source,
                         Destination = comp.Destination,
@@ -95,7 +95,7 @@ namespace ChallengeMod.Events
             {
                 var transferTarget = ctx.Has<CItemProvider>(comp.Source) ? TransferTarget.Provider : TransferTarget.Holder;
 
-                GameEvents.Raise(new ItemTransferEventArgs
+                GameEvents.Raise(new ItemTransferEvent
                 {
                     Source = comp.Source,
                     Destination = comp.Destination,
@@ -107,7 +107,7 @@ namespace ChallengeMod.Events
 
                 if (ctx.Has<CPlayer>(comp.Source))
                 {
-                    GameEvents.Raise(new PlayerPlaceItemEventArgs
+                    GameEvents.Raise(new PlayerPlaceItemEvent
                     {
                         Source = comp.Source,
                         Destination = comp.Destination,
@@ -130,7 +130,7 @@ namespace ChallengeMod.Events
             {
                 if (ctx.Has<CPlayer>(comp.Destination))
                 {
-                    GameEvents.Raise(new PlayerGrabItemEventArgs
+                    GameEvents.Raise(new PlayerGrabItemEvent
                     {
                         Source = comp.Source,
                         Destination = comp.Destination,

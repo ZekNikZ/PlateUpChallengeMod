@@ -9,14 +9,18 @@ namespace ChallengeMod.Events
         Bin
     }
 
-    public class ItemTransferEventArgs : GameEventArgsWithEntityContext
+    public class ItemTransferEvent : GameEvent
     {
-
         public Entity Source;
         public Entity Destination;
         public Entity Item;
         public TransferTarget SourceType;
         public TransferTarget DestinationType;
+
+        public override string ToString()
+        {
+            return $"{SourceType} => {DestinationType}";
+        }
     }
 
     public interface IPlayerItemTransferEvent
@@ -25,23 +29,23 @@ namespace ChallengeMod.Events
         public Entity Surface { get; }
     }
 
-    public class PlayerGrabItemEventArgs : ItemTransferEventArgs, IPlayerItemTransferEvent
+    public class PlayerGrabItemEvent : ItemTransferEvent, IPlayerItemTransferEvent
     {
         public Entity Player => Destination;
         public Entity Surface => Source;
     }
 
-    public class PlayerPlaceItemEventArgs : ItemTransferEventArgs, IPlayerItemTransferEvent
+    public class PlayerPlaceItemEvent : ItemTransferEvent, IPlayerItemTransferEvent
     {
         public Entity Player => Source;
         public Entity Surface => Destination;
     }
 
-    public class AutomationGrabItemEventArgs : ItemTransferEventArgs
+    public class AutomationGrabItemEvent : ItemTransferEvent
     {
     }
 
-    public class AutomationPlaceItemEventArgs : ItemTransferEventArgs
+    public class AutomationPlaceItemEvent : ItemTransferEvent
     {
     }
 }
