@@ -1,18 +1,20 @@
-﻿using ChallengeMod.Events;
+﻿using ChallengeMod.Data;
+using ChallengeMod.Events;
 using KitchenData;
 using KitchenLib;
 using KitchenLib.Event;
 using KitchenMods;
+using System.Linq;
 using System.Reflection;
 using Unity.Entities;
 using UnityEngine;
 
 namespace ChallengeMod
 {
-    internal class Mod : BaseMod, IModSystem
+    internal partial class Mod : BaseMod, IModSystem
     {
         public const string MOD_GUID = "io.zkz.plateup.challenges";
-        public const string MOD_NAME = "Stats & Challenges";
+        public const string MOD_NAME = "Challenges";
         public const string MOD_VERSION = "0.1.0";
         public const string MOD_AUTHOR = "ZekNikZ";
         public const string MOD_GAMEVERSION = ">=1.1.4";
@@ -35,6 +37,8 @@ namespace ChallengeMod
         protected override void OnInitialise()
         {
             EntityManager = base.EntityManager;
+            Challenges.Load();
+            Challenges.Save();
         }
 
         private void AddGameData()
@@ -46,17 +50,26 @@ namespace ChallengeMod
             LogInfo("Done loading game data.");
         }
 
+        private bool done = false;
         protected override void OnUpdate()
         {
+            if (done) return;
+
+            //Object.Instantiate(Bundle.LoadAsset<GameObject>("ChallengeUI"), UICamera.transform.Find("UI Container").transform);
+
+            done = true;
         }
 
         protected override void OnPostActivate(KitchenMods.Mod mod)
         {
             GameEvents.Init();
 
-            // LogInfo("Attempting to load asset bundle...");
-            // Bundle = mod.GetPacks<AssetBundleModPack>().SelectMany(e => e.AssetBundles).First();
-            // LogInfo("Done loading asset bundle.");
+            // Register challenges
+            RegisterChallenges();
+
+            LogInfo("Attempting to load asset bundle...");
+            Bundle = mod.GetPacks<AssetBundleModPack>().SelectMany(e => e.AssetBundles).First();
+            LogInfo("Done loading asset bundle.");
 
             // Register custom GDOs
             AddGameData();

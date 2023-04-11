@@ -21,11 +21,11 @@ namespace ChallengeMod.Events
 
     public class GameEvents
     {
-        private static readonly Dictionary<Type, List<Delegate>> Events = new();
+        private static readonly Dictionary<Type, List<Delegate>> _events = new();
 
         internal static void AddEvent<T>() where T : GameEvent
         {
-            Events.Add(typeof(T), new());
+            _events.Add(typeof(T), new());
             Mod.LogInfo($"Registered event {typeof(T).Name}");
 
             if (Mod.DEBUG_MODE)
@@ -39,7 +39,7 @@ namespace ChallengeMod.Events
 
         internal static void Subscribe<T>(GameEventHandler<T> handler) where T : GameEvent
         {
-            Events[typeof(T)].Add(handler);
+            _events[typeof(T)].Add(handler);
         }
 
         internal static void Init()
@@ -53,9 +53,9 @@ namespace ChallengeMod.Events
 
         internal static void Raise<T>(T args) where T : GameEvent
         {
-            if (Events.ContainsKey(typeof(T)))
+            if (_events.ContainsKey(typeof(T)))
             {
-                foreach (var handler in Events[typeof(T)])
+                foreach (var handler in _events[typeof(T)])
                 {
                     handler.DynamicInvoke(args);
                 }

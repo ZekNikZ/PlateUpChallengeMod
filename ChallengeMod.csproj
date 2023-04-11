@@ -15,7 +15,7 @@
 		<!-- ASSET BUNDLES -->
 
 		<!-- Set the next line to 'true' if you have an asset bundle -->
-		<EnableAssetBundleDeploy>false</EnableAssetBundleDeploy>
+		<EnableAssetBundleDeploy>true</EnableAssetBundleDeploy>
 		<!-- Change this if your mod.assets is located elsewhere than the default location -->
 		<AssetBundlePath>$(ProjectDir)content\mod.assets</AssetBundlePath>
 	</PropertyGroup>
@@ -38,10 +38,6 @@
   
 	<ItemGroup>
 		<PackageReference Include="Yariazen.PlateUp.ModBuildUtilities" Version="1.7.26" />
-	</ItemGroup>
-  
-	<ItemGroup>
-	  <Folder Include="Challenges\" />
 	</ItemGroup>
 
 	<Target Name="BundleWorkshop" AfterTargets="Build" Condition="$(EnableModDeployLocal) == 'true'">
