@@ -40,7 +40,13 @@
 		<PackageReference Include="Yariazen.PlateUp.ModBuildUtilities" Version="1.7.26" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Krafs.Publicizer" Version="2.2.1" />
+		<Publicize Include="KitchenMode:Kitchen.GroupReceiveItem.IsEquivalentRequest" />
+	</ItemGroup>
+
 	<Target Name="BundleWorkshop" AfterTargets="Build" Condition="$(EnableModDeployLocal) == 'true'">
+		<!-- Workshop build folder -->
 		<Copy SourceFiles="$(TargetDir)$(MSBuildProjectName)-Workshop.dll" DestinationFolder="$(WorkshopDir)" />
 	</Target>
 </Project>

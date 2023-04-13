@@ -49,6 +49,7 @@ namespace ChallengeMod.Events
             AddEvent<PlayerPlaceItemEvent>();
             AddEvent<AutomationGrabItemEvent>();
             AddEvent<AutomationPlaceItemEvent>();
+            AddEvent<ServeCustomerEvent>();
         }
 
         internal static void Raise<T>(T args) where T : GameEvent

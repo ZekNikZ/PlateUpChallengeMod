@@ -1,0 +1,32 @@
+.color-incomplete-border {
+    border-left-color: rgba(103, 103, 103, 255);
+    border-right-color: rgba(103, 103, 103, 255);
+    border-top-color: rgba(103, 103, 103, 255);
+    border-bottom-color: rgba(103, 103, 103, 255);
+}
+
+.color-incomplete-bg {
+    background-color: rgba(103, 103, 103, 255);
+}
+
+.color-partial-border {
+    border-left-color: rgba(36, 95, 137, 255);
+    border-right-color: rgba(36, 95, 137, 255);
+    border-top-color: rgba(36, 95, 137, 255);
+    border-bottom-color: rgba(36, 95, 137, 255);
+}
+
+.color-partial-bg {
+    background-color: rgba(36, 95, 137, 255);
+}
+
+.color-complete-border {
+    border-left-color: rgba(25, 128, 22, 255);
+    border-right-color: rgba(25, 128, 22, 255);
+    border-top-color: rgba(25, 128, 22, 255);
+    border-bottom-color: rgba(25, 128, 22, 255);
+}
+
+.color-complete-bg {
+    background-color: rgba(25, 128, 22, 255);
+}

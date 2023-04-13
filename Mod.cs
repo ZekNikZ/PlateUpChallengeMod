@@ -1,5 +1,7 @@
 ﻿using ChallengeMod.Data;
 using ChallengeMod.Events;
+using ChallengeMod.UI;
+using Kitchen;
 using KitchenData;
 using KitchenLib;
 using KitchenLib.Event;
@@ -50,29 +52,41 @@ namespace ChallengeMod
             LogInfo("Done loading game data.");
         }
 
-        private bool done = false;
+        private bool _uiSetup = false;
         protected override void OnUpdate()
         {
-            if (done) return;
+            // Setup UI
+            if (_uiSetup || UICamera == null) return;
+            UIManager.Init(Bundle, UICamera);
+            _uiSetup = true;
 
-            //Object.Instantiate(Bundle.LoadAsset<GameObject>("ChallengeUI"), UICamera.transform.Find("UI Container").transform);
-
-            done = true;
         }
 
         protected override void OnPostActivate(KitchenMods.Mod mod)
         {
+            // Setup events
             GameEvents.Init();
 
-            // Register challenges
-            RegisterChallenges();
-
+            // Load asset bundle
             LogInfo("Attempting to load asset bundle...");
             Bundle = mod.GetPacks<AssetBundleModPack>().SelectMany(e => e.AssetBundles).First();
             LogInfo("Done loading asset bundle.");
 
             // Register custom GDOs
             AddGameData();
+
+            // Register challenges
+            RegisterChallenges();
+
+            // UI Buttons
+            KitchenLib.Event.Events.MainMenu_SetupEvent += (s, args) =>
+            {
+                args.addSubmenuButton.Invoke(args.instance, new object[] { "Challenges", typeof(ChallengesMenu), false });
+            };
+            KitchenLib.Event.Events.PlayerPauseView_SetupMenusEvent += (s, args) =>
+            {
+                args.addMenu.Invoke(args.instance, new object[] { typeof(ChallengesMenu), new ChallengesMenu(args.instance.ButtonContainer, args.module_list) });
+            };
 
             // Perform actions when game data is built
             KitchenLib.Event.Events.BuildGameDataEvent += delegate (object s, BuildGameDataEventArgs args)

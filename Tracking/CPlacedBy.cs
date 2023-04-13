@@ -3,7 +3,7 @@ using Unity.Entities;
 
 namespace ChallengeMod.Tracking
 {
-    public struct CPlacedPy : IModComponent
+    public struct CPlacedBy : IModComponent
     {
         public enum ItemSource {
             Player,

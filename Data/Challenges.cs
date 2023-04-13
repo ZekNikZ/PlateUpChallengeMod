@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ChallengeMod.Utils;
 using KitchenData;
 using UnityEngine;
@@ -103,7 +104,8 @@ namespace ChallengeMod.Data
             return Instance.AddChallenge(challenge);
         }
 
-        internal void AddLocalisation(string challengeId, Locale locale, ChallengeLocalisation localisation) {
+        internal void AddLocalisation(string challengeId, Locale locale, ChallengeLocalisation localisation)
+        {
             if (!_localisation.ContainsKey(challengeId))
             {
                 _localisation.Add(challengeId, new());
@@ -126,7 +128,39 @@ namespace ChallengeMod.Data
                 res[challenge.Category].Add(challenge);
             }
 
-            return res;
+            return res.ToDictionary(el => el.Key, el => el.Value.OrderBy(ch => ch.Order).ThenBy(ch => ch.Id).ToList());
+        }
+
+        internal static ChallengeLocalisation GetLocalisation(string challengeId)
+        {
+            if (Instance._localisation.TryGetValue(challengeId, out var localisation))
+            {
+                if (localisation.ContainsKey(Localisation.CurrentLocale))
+                {
+                    return localisation[Localisation.CurrentLocale];
+                }
+                else if (localisation.ContainsKey(Locale.Default))
+                {
+                    return localisation[Locale.Default];
+                }
+                else if (localisation.ContainsKey(Locale.English))
+                {
+                    return localisation[Locale.English];
+                }
+                else
+                {
+                    return localisation.Values.First();
+                }
+            }
+            else
+            {
+                return default;
+            }
+        }
+
+        internal static ChallengeLocalisation GetLocalisation(BaseChallenge challenge)
+        {
+            return GetLocalisation(challenge.Id);
         }
 
         internal void Merge(Challenges other, bool addMissingChallenges = false)

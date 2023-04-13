@@ -14,10 +14,10 @@ namespace ChallengeMod.Tracking
             {
                 if (args.DestinationType != TransferTarget.Holder) return;
 
-                args.Context.Set(args.Item, new CPlacedPy
+                args.Context.Set(args.Item, new CPlacedBy
                 {
                     Source = args.Player,
-                    SourceType = CPlacedPy.ItemSource.Player,
+                    SourceType = CPlacedBy.ItemSource.Player,
                     Timestamp = args.Timestamp
                 });
             });
@@ -26,10 +26,10 @@ namespace ChallengeMod.Tracking
             {
                 if (args.DestinationType != TransferTarget.Holder) return;
 
-                args.Context.Set(args.Item, new CPlacedPy
+                args.Context.Set(args.Item, new CPlacedBy
                 {
                     Source = args.Source,
-                    SourceType = CPlacedPy.ItemSource.Automation,
+                    SourceType = CPlacedBy.ItemSource.Automation,
                     Timestamp = args.Timestamp
                 });
             });
