@@ -57,7 +57,6 @@ namespace ChallengeMod
         {
             // Setup UI
             if (_uiSetup || UICamera == null) return;
-            UIManager.Init(Bundle, UICamera);
             _uiSetup = true;
 
         }

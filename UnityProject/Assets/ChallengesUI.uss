@@ -1,0 +1,36 @@
+.color-incomplete-border {
+    border-left-color: rgb(103, 103, 103);
+    border-right-color: rgb(103, 103, 103);
+    border-top-color: rgb(103, 103, 103);
+    border-bottom-color: rgb(103, 103, 103);
+}
+
+.color-incomplete-bg {
+    background-color: rgb(103, 103, 103);
+}
+
+.color-partial-border {
+    border-left-color: rgb(36, 95, 137);
+    border-right-color: rgb(36, 95, 137);
+    border-top-color: rgb(36, 95, 137);
+    border-bottom-color: rgb(36, 95, 137);
+}
+
+.color-partial-bg {
+    background-color: rgb(36, 95, 137);
+}
+
+.color-complete-border {
+    border-left-color: rgb(25, 128, 22);
+    border-right-color: rgb(25, 128, 22);
+    border-top-color: rgb(25, 128, 22);
+    border-bottom-color: rgb(25, 128, 22);
+}
+
+.color-complete-bg {
+    background-color: rgb(25, 128, 22);
+}
+
+.text {
+    color: rgba(207, 207, 207, 255);
+}

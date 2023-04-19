@@ -24,6 +24,9 @@ namespace ChallengeMod
                 new SimpleChallenge("mustard"),
                 new SimpleChallenge("soy_sauce")
             }), Loc("Condiment connoisseur", "Serve each type of condiment."));
+
+            this.RegisterChallenge(new SimpleChallenge("test4", Food), Loc("The most important meal", "Serve a full plate of breakfast."));
+            this.RegisterChallenge(new ProgressChallenge("test5", Food, 1000), Loc("Pizza chef", "Serve 1000 plates of pizza."));
         }
     }
 }
